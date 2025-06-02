@@ -1,4 +1,4 @@
-FROM arm64v8/amazoncorretto:11
+FROM amazoncorretto:11
 
 WORKDIR /app
 
