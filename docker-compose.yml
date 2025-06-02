@@ -4,13 +4,7 @@ networks:
 
 services:
   dev:
-    build:
-      context: .
-      target: builder
-      args:
-        VERSION: "${VERSION}"
-        COMMIT: "${COMMIT}"
-        BUILD_TIME: "${BUILD_TIME}"
+    image: ghcr.io/brave/go-sync/go-sync:latest
     depends_on:
       - dynamo-local
       - redis
@@ -27,13 +21,7 @@ services:
       - AWS_ENDPOINT=http://dynamo-local:8000
       - REDIS_URL=redis:6379
   web:
-    build:
-      context: .
-      target: artifact
-      args:
-        VERSION: "${VERSION}"
-        COMMIT: "${COMMIT}"
-        BUILD_TIME: "${BUILD_TIME}"
+    image: ghcr.io/brave/go-sync/go-sync:latest
     ports:
       - "8295:8295"
     depends_on:
@@ -53,9 +41,7 @@ services:
       - TABLE_NAME=client-entity-dev
       - REDIS_URL=redis:6379
   dynamo-local:
-    build:
-      context: .
-      dockerfile: dynamo.Dockerfile
+    image: ghcr.io/brave/go-sync/go-sync-dynamo:latest
     ports:
       - "8000:8000"
     networks:
