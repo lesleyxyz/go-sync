@@ -11,15 +11,15 @@ services:
     networks:
       - sync
     environment:
-      - PPROF_ENABLED=true
-      - SENTRY_DSN
-      - ENV=local
-      - DEBUG=1
-      - AWS_ACCESS_KEY_ID=GOSYNC
-      - AWS_SECRET_ACCESS_KEY=GOSYNC
-      - AWS_REGION=us-west-2
-      - AWS_ENDPOINT=http://dynamo-local:8000
-      - REDIS_URL=redis:6379
+      PPROF_ENABLED: true
+      SENTRY_DSN:       
+      ENV: local
+      DEBUG: 1
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID-:-GOSYNC}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY-:-GOSYNC}
+      AWS_REGION: us-west-2
+      AWS_ENDPOINT: http://dynamo-local:8000
+      REDIS_URL: redis:6379
   web:
     image: ghcr.io/brave/go-sync/go-sync:latest
     ports:
@@ -30,22 +30,25 @@ services:
     networks:
       - sync
     environment:
-      - PPROF_ENABLED=true
-      - SENTRY_DSN
-      - ENV=local
-      - DEBUG=1
-      - AWS_ACCESS_KEY_ID=GOSYNC
-      - AWS_SECRET_ACCESS_KEY=GOSYNC
-      - AWS_REGION=us-west-2
-      - AWS_ENDPOINT=http://dynamo-local:8000
-      - TABLE_NAME=client-entity-dev
-      - REDIS_URL=redis:6379
+      PPROF_ENABLED: true
+      SENTRY_DSN:
+      ENV: local
+      DEBUG: 1
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID-:-GOSYNC}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY-:-GOSYNC}
+      AWS_REGION: us-west-2
+      AWS_ENDPOINT: http://dynamo-local:8000
+      TABLE_NAME: client-entity-dev
+      REDIS_URL: redis:6379
   dynamo-local:
     image: ghcr.io/brave/go-sync/go-sync-dynamo:latest
     ports:
       - "8000:8000"
     networks:
       - sync
+    environment:
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID-:-GOSYNC}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY-:-GOSYNC}
   redis:
     image: public.ecr.aws/docker/library/redis:6.2
     ports:
